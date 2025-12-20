@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Print } from '../types';
 
@@ -8,29 +7,62 @@ interface PrintCardProps {
 }
 
 const PrintCard: React.FC<PrintCardProps> = ({ print }) => {
-  const [isImageLoaded, setImageLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '200px', // Start loading before it's actually visible
+      }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <Link 
       to={`/prints/${print.slug}`} 
       className="group block bg-maker-900/20 backdrop-blur-[2px] hover:bg-maker-900 hover:backdrop-blur-none rounded-xl overflow-hidden shadow-lg hover:shadow-accent-500/20 transition-all duration-300 border border-white/10 hover:border-accent-500/40 hover:-translate-y-1"
     >
-      <div className="relative aspect-square overflow-hidden bg-white/5">
-        {!isImageLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center text-slate-600">
-            <svg className="w-8 h-8 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+      <div ref={cardRef} className="relative aspect-square overflow-hidden bg-white/5">
+        {/* Shimmer Placeholder */}
+        {!isLoaded && (
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite] skew-x-12" />
+            <div className="absolute inset-0 flex items-center justify-center text-slate-700">
+              <svg className="w-10 h-10 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
           </div>
         )}
-        <img
-          src={print.images[0]}
-          alt={print.imageAlts[0] || `3D print: ${print.title}`}
-          className={`w-full h-full object-cover transition-all duration-500 opacity-60 grayscale-[30%] group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 ${isImageLoaded ? '' : 'opacity-0'}`}
-          onLoad={() => setImageLoaded(true)}
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        {/* The Image - Only set 'src' when in view */}
+        {isInView && (
+          <img
+            src={print.images[0]}
+            alt={print.imageAlts[0] || `3D print: ${print.title}`}
+            className={`w-full h-full object-cover transition-all duration-700 ease-out 
+              ${isLoaded ? 'opacity-60 grayscale-[30%] scale-100' : 'opacity-0 scale-110'} 
+              group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105`}
+            onLoad={() => setIsLoaded(true)}
+            loading="lazy"
+          />
+        )}
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       </div>
 
       <div className="p-4">
@@ -50,6 +82,12 @@ const PrintCard: React.FC<PrintCardProps> = ({ print }) => {
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </Link>
   );
 };
