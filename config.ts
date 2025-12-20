@@ -1,4 +1,3 @@
-
 export const CONFIG = {
   // Connected to your live Google Sheet
   GOOGLE_SHEET_URL: "https://docs.google.com/spreadsheets/d/1ChFWtpVyOID9dZ6eW5jTyDD-YtgNe3rUeSchTWUavYk/export?format=csv",
@@ -12,6 +11,7 @@ export const CONFIG = {
     { label: 'Home', path: '/' },
     { label: 'Gallery', path: '/gallery' },
     { label: 'Materials', path: '/materials' },
+    { label: 'FAQs', path: '/faqs' },
     { label: 'About', path: '/about' },
   ],
   

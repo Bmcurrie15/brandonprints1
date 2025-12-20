@@ -40,7 +40,7 @@ const About: React.FC = () => {
       
       <div className="prose prose-invert prose-lg text-slate-400 space-y-10 leading-relaxed">
         <p>
-          Hi, I'm <strong className="text-slate-200">Brandon Currie</strong>, a maker based in <strong className="text-slate-200">Leonardtown, MD</strong>. I've been 3D printing and modeling for over 5 years. 
+          Hi, I'm <strong className="text-slate-200">Brandon Currie</strong>, a maker based in <strong className="text-slate-200">Leonardtown, MD</strong>. I've been 3D printing and modeling for over <strong className="text-slate-200">7 years</strong>. 
           What started as tinkering with a basic kit printer has grown into a passion 
           for functional design and rapid prototyping.
         </p>

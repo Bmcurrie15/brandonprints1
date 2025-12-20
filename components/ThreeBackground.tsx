@@ -1,14 +1,14 @@
+
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 
 // Fix for React Three Fiber JSX types not being automatically picked up by the TypeScript compiler.
-// We extend the React.JSX.IntrinsicElements interface with ThreeElements from @react-three/fiber.
+// We explicitly extend the global JSX.IntrinsicElements using the ThreeElements type from @react-three/fiber
+// to ensure that 3D elements like <group />, <mesh />, and various geometries are recognized.
 declare global {
-  namespace React {
-    namespace JSX {
-      interface IntrinsicElements extends ThreeElements {}
-    }
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
   }
 }
 
@@ -86,7 +86,7 @@ const PrinterScene = () => {
          const speed = 4; // Slightly slower / more graceful
          const radius = 1.3; // Wider motion radius to match widened geometry and request
          nozzleRef.current.position.x = Math.sin(t * speed) * radius;
-         nozzleRef.current.position.z = Math.cos(t * (speed * 0.8)) * radius;
+         nozzleRef.current.position.z = Math.max(0.5, Math.cos(t * (speed * 0.8))) * radius;
     }
   });
 
