@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Print } from '../types';
+import { getOptimizedImageUrl } from '../services/dataService';
 
 interface PrintCardProps {
   print: Print;
@@ -20,7 +21,7 @@ const PrintCard: React.FC<PrintCardProps> = ({ print }) => {
         }
       },
       {
-        rootMargin: '200px', // Start loading before it's actually visible
+        rootMargin: '200px',
       }
     );
 
@@ -31,13 +32,15 @@ const PrintCard: React.FC<PrintCardProps> = ({ print }) => {
     return () => observer.disconnect();
   }, []);
 
+  // Request a 600px wide optimized version for the gallery grid
+  const imageUrl = getOptimizedImageUrl(print.images[0], 600);
+
   return (
     <Link 
       to={`/prints/${print.slug}`} 
       className="group block bg-maker-900/20 backdrop-blur-[2px] hover:bg-maker-900 hover:backdrop-blur-none rounded-xl overflow-hidden shadow-lg hover:shadow-accent-500/20 transition-all duration-300 border border-white/10 hover:border-accent-500/40 hover:-translate-y-1"
     >
       <div ref={cardRef} className="relative aspect-square overflow-hidden bg-white/5">
-        {/* Shimmer Placeholder */}
         {!isLoaded && (
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite] skew-x-12" />
@@ -49,10 +52,9 @@ const PrintCard: React.FC<PrintCardProps> = ({ print }) => {
           </div>
         )}
 
-        {/* The Image - Only set 'src' when in view */}
         {isInView && (
           <img
-            src={print.images[0]}
+            src={imageUrl}
             alt={print.imageAlts[0] || `3D print: ${print.title}`}
             className={`w-full h-full object-cover transition-all duration-700 ease-out 
               ${isLoaded ? 'opacity-60 grayscale-[30%] scale-100' : 'opacity-0 scale-110'} 

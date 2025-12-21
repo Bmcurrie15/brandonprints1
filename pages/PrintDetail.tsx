@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchPrints } from '../services/dataService';
+import { fetchPrints, getOptimizedImageUrl } from '../services/dataService';
 import { Print, EMAIL_LINK } from '../types';
 import SEO from '../components/SEO';
 
@@ -56,7 +55,7 @@ const PrintDetail: React.FC = () => {
         <div className="lg:col-span-7 space-y-4">
           <div className="aspect-square bg-maker-900 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative group">
              <img 
-               src={print.images[activeImageIndex]} 
+               src={getOptimizedImageUrl(print.images[activeImageIndex], 1200)} 
                alt={print.imageAlts[activeImageIndex] || print.title}
                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
              />
@@ -75,7 +74,11 @@ const PrintDetail: React.FC = () => {
                         : 'border-transparent opacity-40 hover:opacity-100 hover:scale-105'
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <img 
+                    src={getOptimizedImageUrl(img, 200)} 
+                    alt="" 
+                    className="w-full h-full object-cover" 
+                  />
                 </button>
               ))}
             </div>

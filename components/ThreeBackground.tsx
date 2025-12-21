@@ -4,11 +4,22 @@ import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 
 // Fix for React Three Fiber JSX types not being automatically picked up by the TypeScript compiler.
-// We explicitly extend the global JSX.IntrinsicElements using the ThreeElements type from @react-three/fiber
-// to ensure that 3D elements like <group />, <mesh />, and various geometries are recognized.
+// We explicitly extend both the global JSX.IntrinsicElements and React.JSX.IntrinsicElements namespaces
+// using the ThreeElements type from @react-three/fiber. This ensures that 3D elements like 
+// <group />, <mesh />, and geometries are recognized in both older and modern React configurations.
+// The index signature [key: string]: any is included as a resilient fallback.
 declare global {
   namespace JSX {
-    interface IntrinsicElements extends ThreeElements {}
+    interface IntrinsicElements extends ThreeElements {
+      [key: string]: any;
+    }
+  }
+  namespace React {
+    namespace JSX {
+      interface IntrinsicElements extends ThreeElements {
+        [key: string]: any;
+      }
+    }
   }
 }
 

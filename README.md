@@ -4,41 +4,26 @@
 
 ### 1. Create the Google Sheet
 Create a new Google Sheet with exactly these headers in Row 1:
-- `slug` (e.g., `geometric-planter`)
-- `title` (e.g., `Geometric Planter`)
-- `description` (Short sentence)
-- `category` (Values: `Sports`, `Gifts`, `Functional`, `Decorative`)
-- `material` (e.g., `PLA`, `PETG`, `TPU`)
-- `purpose` (Values: `gift`, `personal`, `custom`)
-- `notes` (e.g., `Printed with 0.6mm nozzle for strength`)
-- `featured` (TRUE or FALSE)
-- `images` (Pipe-separated URLs: `url1|url2`)
-- `imageAlts` (Pipe-separated text: `Side view|Top view`)
+- `slug`, `title`, `description`, `category`, `material`, `purpose`, `notes`, `featured`, `images`, `imageAlts`
 
 ### 2. Publish to Web
 1. File > Share > Publish to web.
-2. Select "Entire Document" (or specific sheet) and "Comma-separated values (.csv)".
-3. Click Publish.
-4. Copy the link generated.
+2. Select "Entire Document" and "Comma-separated values (.csv)".
+3. Copy the link into `config.ts` -> `GOOGLE_SHEET_URL`.
 
-### 3. Configure the App
-In `services/dataService.ts`, replace the `DEMO_SHEET_URL` constant with your published CSV link.
-Alternatively, set it via environment variable `VITE_GOOGLE_SHEET_URL` if using a build system that supports it.
-
-### 4. Hosting
-This is a static React SPA.
-- **GitHub Pages**: Build and push to gh-pages branch.
-- **Netlify/Vercel**: Connect repo and set build command `npm run build` and output `dist`.
-
-### 5. Google Drive Images
-If using Drive images, ensure files are "Anyone with the link can view".
-The app automatically converts standard sharing links (e.g., `drive.google.com/file/d/ID/view`) into direct embed links.
+### 3. Performance Optimization (Highly Recommended)
+To prevent slow image loads from Google Drive and ensure a 100/100 performance score:
+1. Create a free account at [Cloudinary](https://cloudinary.com/).
+2. Copy your **Cloud Name** from the dashboard.
+3. Paste it into `config.ts` -> `CLOUDINARY_CLOUD_NAME`.
+4. The app will now automatically optimize, resize, and cache your images globally.
 
 ---
 
 ## Tech Stack
-- React 18
+- React 19
 - TypeScript
 - Tailwind CSS
 - Three.js (@react-three/fiber)
-- HashRouter (for static compatibility)
+- Cloudinary Fetch API (Optimization)
+- Google Sheets (CMS)

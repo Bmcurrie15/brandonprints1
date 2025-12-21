@@ -1,4 +1,3 @@
-
 import { Print } from '../types';
 import { CONFIG } from '../config';
 
@@ -53,11 +52,26 @@ const FALLBACK_DATA: Print[] = [
   }
 ];
 
+/**
+ * Optimizes an image URL using Cloudinary Fetch API if configured.
+ * Otherwise returns the original URL.
+ */
+export const getOptimizedImageUrl = (url: string, width: number = 800): string => {
+  if (!url) return '';
+  if (!CONFIG.CLOUDINARY_CLOUD_NAME) return url;
+  
+  // Cloudinary Fetch URL format: 
+  // https://res.cloudinary.com/[cloud_name]/image/fetch/[transformations]/[remote_url]
+  const transformations = `f_auto,q_auto,w_${width},c_limit`;
+  return `https://res.cloudinary.com/${CONFIG.CLOUDINARY_CLOUD_NAME}/image/fetch/${transformations}/${encodeURIComponent(url)}`;
+};
+
 export const parseGoogleDriveLink = (url: string): string => {
   if (!url) return '';
   const driveRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
   const match = url.match(driveRegex);
   if (match && match[1]) {
+    // Return the high-res thumbnail link which we can then proxy through Cloudinary
     return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`; 
   }
   return url;
@@ -135,7 +149,6 @@ export const fetchPrints = async (): Promise<Print[]> => {
             title: cols[1],
             description: cols[2],
             category: cols[3],
-            // Split material column by pipe to support multiple tags
             materials: cols[4]?.split('|').map(m => m.trim()).filter(m => m.length > 0) || [],
             purpose: cols[5],
             notes: cols[6],

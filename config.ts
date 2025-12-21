@@ -2,6 +2,10 @@ export const CONFIG = {
   // Connected to your live Google Sheet
   GOOGLE_SHEET_URL: "https://docs.google.com/spreadsheets/d/1ChFWtpVyOID9dZ6eW5jTyDD-YtgNe3rUeSchTWUavYk/export?format=csv",
   
+  // OPTIONAL: Sign up for a free Cloudinary account and put your Cloud Name here
+  // This enables global CDN caching, auto-WebP conversion, and smart resizing.
+  CLOUDINARY_CLOUD_NAME: "dga3jnwh5", 
+
   CONTACT: {
     EMAIL: "bmcurrie15@gmail.com",
     SUBJECT: "Custom 3D print request",
