@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FilterState, CategoryOption } from '../types';
 import { CONFIG } from '../config';
@@ -11,7 +10,11 @@ interface FilterBarProps {
 
 const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters, availableMaterials }) => {
   return (
-    <div className="bg-maker-900/80 p-4 rounded-xl shadow-xl border border-white/10 space-y-4 md:space-y-0 md:flex md:items-center md:gap-6 sticky top-20 z-40 backdrop-blur-md">
+    /* 
+       Updated 'sticky' to 'md:sticky' and 'top-20' to 'md:top-20' 
+       to ensure the filters scroll away on mobile but stay pinned on desktop.
+    */
+    <div className="bg-maker-900/80 p-4 rounded-xl shadow-xl border border-white/10 space-y-4 md:space-y-0 md:flex md:items-center md:gap-6 md:sticky md:top-20 z-40 backdrop-blur-md transition-all">
       {/* Categories */}
       <div className="flex flex-wrap gap-2 flex-1">
         {CONFIG.CATEGORIES.map(cat => (
