@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FilterState, SortOption } from '../types';
 import { CONFIG } from '../config';
 
@@ -9,8 +9,37 @@ interface FilterBarProps {
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters, availableMaterials }) => {
+  const [isVisible, setIsVisible] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Determine if we are at the very top of the page
+      setIsAtTop(currentScrollY < 50);
+
+      // Hide on scroll down, show on scroll up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="space-y-6 md:sticky md:top-20 z-40">
+    <div 
+      className={`space-y-6 md:sticky md:top-20 z-40 transition-all duration-500 ease-in-out transform ${
+        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-32 opacity-0 pointer-events-none'
+      }`}
+    >
       {/* 1. Category Tabs - Clean & Horizontal */}
       <div className="flex items-center justify-center border-b border-white/5 pb-2 overflow-x-auto no-scrollbar">
         <div className="flex gap-8 px-4">
@@ -34,7 +63,11 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters, availableMat
       </div>
 
       {/* 2. Utility Row - Minimalist Controls */}
-      <div className="flex flex-col md:flex-row items-center gap-4 bg-maker-900/40 backdrop-blur-md p-2 rounded-2xl border border-white/5 shadow-2xl">
+      <div className={`flex flex-col md:flex-row items-center gap-4 p-2 rounded-2xl border transition-all duration-500 ${
+        isAtTop 
+          ? 'bg-maker-900/40 backdrop-blur-md border-white/5' 
+          : 'bg-maker-950/95 backdrop-blur-xl border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]'
+      }`}>
         
         {/* Search - Expanding Style */}
         <div className="relative w-full md:flex-grow">
