@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense, useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import ThreeBackground from './components/ThreeBackground';
 import Home from './pages/Home';
@@ -11,8 +11,8 @@ import FAQs from './pages/FAQs';
 
 // ScrollToTop component to fix scroll position on route change
 const ScrollToTop = () => {
-    const { pathname } = React.useMemo(() => window.location, []);
-    React.useEffect(() => {
+    const { pathname } = useLocation();
+    useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
     return null;
@@ -26,7 +26,7 @@ const App: React.FC = () => {
       <ThreeBackground />
       
       <Layout>
-        <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+        <Suspense fallback={<div className="p-10 text-center text-slate-400">Loading Brandon Prints...</div>}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/gallery" element={<Gallery />} />
