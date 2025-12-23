@@ -121,11 +121,11 @@ const Materials: React.FC = () => {
                 key={mat.name}
                 className="group flex flex-col bg-maker-900/30 backdrop-blur-sm hover:bg-maker-900/50 rounded-2xl overflow-hidden shadow-2xl border border-white/5 transition-all duration-500 hover:border-accent-500/40 hover:-translate-y-1"
             >
-                {/* Header Section - Tags as separate rectangles */}
+                {/* Header Section - Cyan Category Labels */}
                 <div className="p-8 pb-4 space-y-3">
                     <div className="flex flex-wrap gap-2">
                         {mat.bestFor.map(tag => (
-                          <span key={tag} className="inline-block text-[9px] font-black text-accent-500 bg-accent-500/10 border border-accent-500/20 px-2.5 py-1 rounded-md uppercase tracking-[0.15em] shadow-sm">
+                          <span key={tag} className="inline-block text-[10px] font-bold text-sky-400 bg-black/40 border border-sky-500/40 px-2.5 py-1 rounded-lg uppercase tracking-widest">
                               {tag}
                           </span>
                         ))}
