@@ -38,9 +38,9 @@ const PrintCard: React.FC<PrintCardProps> = ({ print }) => {
   return (
     <Link 
       to={`/prints/${print.slug}`} 
-      className="group block bg-maker-900/20 backdrop-blur-[2px] hover:bg-maker-900 hover:backdrop-blur-none rounded-xl overflow-hidden shadow-lg hover:shadow-accent-500/20 transition-all duration-300 border border-white/10 hover:border-accent-500/40 hover:-translate-y-1"
+      className="group block bg-white/[0.03] backdrop-blur-[2px] hover:bg-maker-900 hover:backdrop-blur-none rounded-xl overflow-hidden shadow-lg hover:shadow-accent-500/25 transition-all duration-500 border border-white/10 hover:border-accent-500/50 hover:-translate-y-1.5"
     >
-      <div ref={cardRef} className="relative aspect-square overflow-hidden bg-white/5">
+      <div ref={cardRef} className="relative aspect-square overflow-hidden bg-slate-800">
         {!isLoaded && (
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite] skew-x-12" />
@@ -57,28 +57,31 @@ const PrintCard: React.FC<PrintCardProps> = ({ print }) => {
             src={imageUrl}
             alt={print.imageAlts[0] || `3D print: ${print.title}`}
             className={`w-full h-full object-cover transition-all duration-700 ease-out 
-              ${isLoaded ? 'opacity-60 grayscale-[30%] scale-100' : 'opacity-0 scale-110'} 
-              group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105`}
+              ${isLoaded ? 'opacity-90 grayscale-0 scale-100' : 'opacity-0 scale-110'} 
+              group-hover:opacity-100 group-hover:scale-105`}
             onLoad={() => setIsLoaded(true)}
             loading="lazy"
           />
         )}
         
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* Subtitle overlay on hover for a premium feel */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
+           <span className="text-white font-bold text-sm translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Project Details</span>
+        </div>
       </div>
 
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-semibold text-slate-200 group-hover:text-accent-500 transition-colors line-clamp-1 shadow-black drop-shadow-md">
+      <div className="p-5">
+        <div className="flex justify-between items-start mb-3">
+          <h3 className="text-lg font-bold text-slate-100 group-hover:text-accent-500 transition-colors line-clamp-1">
             {print.title}
           </h3>
         </div>
-        <div className="flex flex-wrap gap-2 text-[10px]">
-          <span className="px-2 py-0.5 bg-white/5 text-slate-400 rounded-md font-medium border border-white/5 group-hover:bg-white/10 transition-colors uppercase tracking-wider">
+        <div className="flex flex-wrap gap-2 text-[9px]">
+          <span className="px-2.5 py-1 bg-white/5 text-slate-300 rounded-md font-black border border-white/5 group-hover:bg-white/10 transition-colors uppercase tracking-[0.1em]">
             {print.category}
           </span>
-          {print.materials.map(mat => (
-            <span key={mat} className="px-2 py-0.5 bg-accent-500/10 text-accent-500 rounded-md font-medium border border-accent-500/20 group-hover:bg-accent-500/20 transition-colors uppercase tracking-wider">
+          {print.materials.slice(0, 2).map(mat => (
+            <span key={mat} className="px-2.5 py-1 bg-accent-500/10 text-accent-400 rounded-md font-black border border-accent-500/20 group-hover:bg-accent-500/20 transition-colors uppercase tracking-[0.1em]">
               {mat}
             </span>
           ))}
