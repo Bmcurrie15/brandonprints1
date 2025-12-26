@@ -129,7 +129,7 @@ const Home: React.FC = () => {
                     </ul>
                 </div>
                 <div className="space-y-2">
-                    <div className="text-accent-500 font-bold">Printing</div>
+                    <div className="text-accent-500 font-bold">3D Printing</div>
                     <ul className="text-xs text-slate-400 space-y-1">
                         <li>Bambu Lab H2D</li>
                         <li>Multi-Color (AMS)</li>
