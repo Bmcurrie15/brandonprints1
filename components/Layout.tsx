@@ -218,10 +218,17 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <FilamentScrollProgress />
 
       <footer className="w-full bg-maker-950/50 border-t border-white/5 py-8 mt-auto relative z-10">
-        <div className="max-w-6xl mx-auto px-4 text-center">
+        <div className="max-w-6xl mx-auto px-4 text-center space-y-2">
           <p className="text-slate-500 text-sm">
             © {new Date().getFullYear()} Brandon Prints. Built for the love of making.
           </p>
+          <div className="flex items-center justify-center gap-1.5 text-slate-600 text-xs font-medium uppercase tracking-wider">
+            <svg className="w-3 h-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Located in Leonardtown, Maryland
+          </div>
         </div>
       </footer>
     </div>

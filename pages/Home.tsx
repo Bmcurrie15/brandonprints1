@@ -1,20 +1,62 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { usePrints } from '../hooks/usePrints';
 import PrintCard from '../components/PrintCard';
 import SEO from '../components/SEO';
 import { LoadingGrid } from '../components/LoadingState';
+import { CONFIG } from '../config';
 
 const Home: React.FC = () => {
   const { featuredPrints, loading } = usePrints();
 
+  // 1. "Invisible" SEO: We feed Google specific details about your location and services using JSON-LD.
+  // This helps you rank for "3D Printing Leonardtown" without cluttering the UI.
+  const homeJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Brandon Prints",
+    "image": CONFIG.AVATAR_URL,
+    "url": window.location.href,
+    "priceRange": "$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Leonardtown",
+      "addressRegion": "MD",
+      "addressCountry": "US"
+    },
+    "description": "Custom 3D printing and CAD design services in Leonardtown, Maryland. Specializing in functional prototypes, replacement parts, and unique gifts.",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "3D Printing Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "FDM 3D Printing",
+            "description": "High-quality prints in PLA, PETG, TPU, and ABS."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "CAD Design",
+            "description": "Fusion 360 modeling for functional parts."
+          }
+        }
+      ]
+    }
+  };
+
   return (
     <div className="space-y-16">
       <SEO 
-        title="Brandon Currie | Custom 3D Printing & Design Portfolio"
-        description="The personal 3D printing portfolio of Brandon Currie. Featuring custom functional prints, prototypes, and decorative 3D models."
+        title="Brandon Prints | Custom 3D Printing in Leonardtown, MD"
+        description="Brandon Currie offers custom 3D printing, CAD design, and prototyping services in Leonardtown, Maryland. Specializing in functional parts and unique gifts."
         name="Brandon Currie"
+        type="LocalBusiness"
+        schemaOverride={homeJsonLd}
       />
 
       <section className="text-center space-y-6 pt-12 pb-8 relative">
@@ -66,6 +108,51 @@ const Home: React.FC = () => {
             >
                 Explore The Full Archive -&gt;
             </Link>
+        </div>
+      </section>
+
+      {/* 
+        2. "Visible" SEO: A Keyword-Rich Services Section
+        This adds density for keywords like "CAD", "Prototyping", "Bambu Lab", "Leonardtown".
+        It is styled nicely so it doesn't look like spam, but provides the raw text Google needs.
+      */}
+      <section className="py-12 border-t border-white/5">
+        <div className="bg-maker-900/40 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
+            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 text-center">Capabilities & Service Area</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div className="space-y-2">
+                    <div className="text-accent-500 font-bold">Design</div>
+                    <ul className="text-xs text-slate-400 space-y-1">
+                        <li>Fusion 360 CAD</li>
+                        <li>Rapid Prototyping</li>
+                        <li>Reverse Engineering</li>
+                    </ul>
+                </div>
+                <div className="space-y-2">
+                    <div className="text-accent-500 font-bold">Printing</div>
+                    <ul className="text-xs text-slate-400 space-y-1">
+                        <li>Bambu Lab H2D</li>
+                        <li>Multi-Color (AMS)</li>
+                        <li>High Tolerance</li>
+                    </ul>
+                </div>
+                <div className="space-y-2">
+                    <div className="text-accent-500 font-bold">Materials</div>
+                    <ul className="text-xs text-slate-400 space-y-1">
+                        <li>PLA / PLA+</li>
+                        <li>PETG</li>
+                        <li>TPU</li>
+                    </ul>
+                </div>
+                <div className="space-y-2">
+                    <div className="text-accent-500 font-bold">Location</div>
+                    <ul className="text-xs text-slate-400 space-y-1">
+                        <li>Leonardtown, MD</li>
+                        <li>St. Mary's County</li>
+                        <li>Southern Maryland (SOMD)</li>
+                    </ul>
+                </div>
+            </div>
         </div>
       </section>
     </div>
