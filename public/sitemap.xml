@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 
+    NOTE: Replace "https://your-domain.com" with your actual domain name.
+    Since you are using Hash Routing (#), Google only strictly indexes the root URL 
+    via Sitemap, but will discover the other links by rendering the JavaScript.
+  -->
+  <url>
+    <loc>https://brandonprints.dev/</loc>
+    <lastmod>2024-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
